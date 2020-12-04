@@ -10,8 +10,9 @@ job done first and exposing interesting techniques (maybe) second.
 
 ## Possible points of interest
 
+The numbers below reference the days in question.
+
 01. Use of `do*` to loop across lists, à la `maplist`
 02. Use of `re-search-forward` to loop through buffer collecting matches
 03. `solve2` is functional.  `incf` simple macro (which is also in `'cl`)
-
-
+04. This is a slightly trickier puzzle or at least seems to require more code.  Maybe the test dispatch is the thing to check out.
