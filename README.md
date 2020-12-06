@@ -18,3 +18,4 @@ code.  The numbers below reference the days in question.
 03. `solve2` is functional.  `incf` simple macro (which is also in `'cl`)
 04. This is a slightly trickier puzzle or at least seems to require more code.  Maybe the test dispatch is the thing to check out.
 05. Using the same list twice to inspect adjacent elements
+06. How often do you use #'mapcan to solve a problem?
