@@ -5,7 +5,7 @@
 
 ;;; As usual, the code reads data from a buffer
 
-(defvar +data-buffer+ "06.test"
+(defvar +data-buffer+ "06.input"
   "Name of buffer containing the data to process")
 
 
@@ -109,7 +109,7 @@
 ;;; => ("abc" "wombat")
 
 (defun remove-if-not (pred lst)
-  ;; This is a slighty wasteful implementation in terms of consing
+  "Remove items not satisfying predicate, ie keep those that do.  Result is freshly consed so lst is unchanged"
   (mapcan (lambda (x) (if (funcall pred x) (list x) nil)) lst))
     
 
