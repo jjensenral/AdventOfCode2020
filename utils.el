@@ -59,15 +59,14 @@ Returns a cons of seconds, and the return value"
 	(goto-char 0)
 	(while (re-search-forward regexp nil t)
 	  (push
-	   (funcall func
-		    (if (zerop match-count)
-			;; Passing the whole match string to the function
-			(buffer-substring-no-properties (match-beginning 0) (match-end 0))
-		      ;; Or an assembled list of substrings
-		      (let ((result nil))
-			(dotimes (k match-count)
-			  (push (buffer-substring-no-properties (match-beginning (1+ k)) (match-end (1+ k))) result))
-			(nreverse result))))
+	   (if (zerop match-count)
+	       ;; Passing the whole match string to the function
+	       (funcall func (buffer-substring-no-properties (match-beginning 0) (match-end 0)))
+	     ;; Or an assembled list of substrings
+	     (let ((result nil))
+	       (dotimes (k match-count)
+		 (push (buffer-substring-no-properties (match-beginning (1+ k)) (match-end (1+ k))) result))
+	       (apply func (nreverse result))))
 	   ;; push onto accumulator
 	   accumulator)
 	  ;; Step past the end of the match to make sure we don't match again
