@@ -84,4 +84,6 @@ Returns a cons of seconds, and the return value"
      (while (setq it ,test) ,@body)))
 
 
-
+(defmacro awhen (test &rest body)
+  "Anaphoric when"
+  `(let ((it ,test)) (when it ,@body)))
