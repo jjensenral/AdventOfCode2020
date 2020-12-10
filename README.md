@@ -20,3 +20,5 @@ code.  The numbers below reference the days in question.
 05. Using the same list twice to inspect adjacent elements
 06. How often do you use `mapcan` to solve a problem?
 07. The counting algorithm for part 2 is pretty neat if I may say so myself, recursing through the graph
+08. Going backwards through the program to fix it?
+09. Using an efficient queue implemented as LISt Processing
