@@ -87,3 +87,43 @@ Returns a cons of seconds, and the return value"
 (defmacro awhen (test &rest body)
   "Anaphoric when"
   `(let ((it ,test)) (when it ,@body)))
+
+
+
+;;; First seen in 06.el
+(defun add-to-alist (elt lst)
+  "Add element count to alist, returning the resulting list.  The input list may or may not be modified."
+  (let ((match (assoc elt lst)))
+    (if match
+	(progn (rplacd match (1+ (cdr match))) lst)	; replace in-place
+      (cons (cons elt 1) lst))))
+
+(defun count-elems (seq)
+  "In a sequence, return the elements and their count eg \"abracadabra\" => ((100 . 1) (99 . 1) (114 . 2) (98 . 2) (97 . 5)).  #'equal is used for equality"
+  (let ((result nil))
+    (mapc (lambda (c) (setq result (add-to-alist c result))) seq)
+    result))
+
+
+;;; This is a standard lispy thing, more or less
+;;; Compatibility note 1: subseq is in CL but it gives us generic split (vector, list, string)
+;;; Compatibility note 2: ELisp does have #'split-string
+;;; Compatibility note 3: fun fact - even CL does not have a split-sequence as part of the standard
+
+;;; (split-sequence (lambda (c) (eq c ?x)) "abcxdefxghi")
+;;; => ("abc" "def" "ghi")
+;;; (split-sequence (lambda (c) (eq c ?x)) "xyzzyx")
+;;; => ("" "yzzy" "")
+;;; (split-sequence #'null (list 'a 'b nil 'c 'd nil nil 'e))
+;;; => ((a b) (c d) nil (e))
+;;; (split-sequence #'atom [(1 2) 3 (4 5) 6 7])
+;;; ([(1 2)] [(4 5)] [] [])
+
+
+(defun split-sequence (test seq)
+  "Split sequence at elements satisfying test, returning a list of sequences of the pieces"
+  (let* ((m1 (position-if test seq)))
+    (cons (subseq seq 0 m1)
+	  (if m1
+	      (split-sequence test (subseq seq (1+ m1)))
+	    nil))))
