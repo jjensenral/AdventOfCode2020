@@ -23,3 +23,5 @@ code.  The numbers below reference the days in question.
 08. Going backwards through the program to fix it?
 09. Using an efficient queue implemented as LISt Processing
 10. More LISt Processing, using generic `split-sequence` (in utils) to reduce the problem
+11. Sadly, my ELisp code has a bug; it works on the test but not on the full input.  Until I fix the bug, I solved it in C++ instead (not included here)
+12. Why would you sometimes use `member` to check membership if it's guaranteed to be true?
