@@ -71,6 +71,8 @@ Returns a cons of seconds, and the return value"
 	   accumulator)
 	  ;; Step past the end of the match to make sure we don't match again
 	  (goto-char (1+ (match-end 0)))))
+      (unless (eql (point) (buffer-end 1))
+	(warn "Warning: map finished early at %d" (point)))
       (nreverse accumulator))))
 
 
