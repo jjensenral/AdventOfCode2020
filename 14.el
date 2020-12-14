@@ -100,7 +100,7 @@
 
 ;;; Now a mask is more complicated
 ;;; We can ignore the zeros, and record the position of the Xes
-;;; We return (ones pos1 pos2 ..)
+;;; We return (word-length ones pos1 pos2 ..)
 ;;;
 ;;; (make-mask2 "000000000000000000000000000000X1001X")
 ;;; => (36 18 0 5)
