@@ -3,18 +3,18 @@
 ;;;; jens.jensen@stfc.ac.uk
 
 
-
-;;; Implementation note.  We considered storing the vector backwards
-;;; as most find/position functions are happier working forwards.
-;;;
-;;; However, using cl-position makes this unnecessary:
-;;; (cl-position 6 '[1 2 3 6 3 4 5 6 7] :from-end t :end 4)
-;;; => 3
+;;; There was an earlier version which used a seek through the vector.
+;;; This took forever to run on problem 2.  This one has go-faster-stripes
+;;; painted on it, making it go faster (obviously).
 
 
-;;; vectors in ELisp are not super fast...(on the author's slow laptop)
+;;; On the author's slow laptop, this is the timing for the fast version:
 ;;; (time (solve1-test))
-;;; (0.399136 . t)
+;;; (0.006862 . t)
+;;; and the second version (not the test, good luck with that)
+;;; (23.365308 . ...)
+;;; (22.916457 . ...)
+
 
 (defun solve1-test nil
   (and
@@ -36,21 +36,24 @@
 
 (defun solve1-input (input total-length)
   "Solve for input which can be a list or a vector of starting values"
-  (let ((len (length input)))
-    (algo (vconcat input (make-vector (- total-length len) nil)) (1- len) total-length)))
+  (let ((len (length input))
+	(position-table (make-hash-table)))
+    ;; pos table will store the most recent two position of its key,
+    ;; or nil if there wasn't one
+    (dotimes (k len) (puthash (elt input k) (cons k nil) position-table))
+    (algo (vconcat input (make-vector (- total-length len) nil)) (1- len) total-length position-table)))
 
 
-(defun algo (v k total-length)
+(defun algo (v k total-length position-table)
   "Process vector v with the most recent number at k.  The final number is returned."
   (let ((limit (1- total-length)))
     (while (< k limit)
 
       (let* ((most-recent (aref v k))
-	     ;; The location at end is not included so we won't find the
-	     ;; same number again.
-	     (prior (cl-position most-recent v :from-end t :end k)))
-
+	     (prior (cdr  (gethash most-recent position-table)))
+	     (new-elt (if prior (- k prior) 0)))
 	(setf k (1+ k)			; now pointing at first nil
-	      (aref v k) (if prior (- k prior 1) 0)))))
+	      (aref v k) new-elt)
+	(puthash new-elt (cons k (car (gethash new-elt position-table))) position-table))))
 
-  (aref v 2019))
+  (aref v k))
