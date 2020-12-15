@@ -44,3 +44,4 @@ code.  The numbers below reference the days in question.
 12. Why would you sometimes use `member` to check membership if it's guaranteed to be true?
 13. Lots of integery and listy calculations...
 14. Bit manipulations.  Backtick outside of macros.
+15. High performance Emacs?!
