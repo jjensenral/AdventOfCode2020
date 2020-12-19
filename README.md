@@ -44,4 +44,6 @@ code.  The numbers below reference the days in question.
 12. Why would you sometimes use `member` to check membership if it's guaranteed to be true?
 13. Lots of integery and listy calculations...
 14. Bit manipulations.  Backtick outside of macros.
-15. High performance Emacs?!
+15. Go-faster-stripes (well, a hash table) makes code run faster!  A queue of length two...
+16. More uses of `mapcan` than you can shake a can at.
+17. Finally caved in and used `loop` - well, it makes sense to use it where it makes sense.
