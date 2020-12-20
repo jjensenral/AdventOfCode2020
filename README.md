@@ -25,6 +25,10 @@ Although the author has mostly tried to stay with core ELisp, in some
 cases, using a CL function has significantly shortened or improved
 readability of the code.  You may need to `(require 'cl)`.
 
+Older Emacsen may not be compatible.  For example, in Emacs 24, `#'=`
+accepts only two arguments, whereas later Emacsen (26, 27) (and the
+Common Lisp standard) accept multiple arguments.
+
 ## Possible points of interest
 
 These are the potentially least uninteresting parts of each day's
@@ -47,3 +51,4 @@ code.  The numbers below reference the days in question.
 15. Go-faster-stripes (well, a hash table) makes code run faster!  A queue of length two...
 16. More uses of `mapcan` than you can shake a can at.
 17. Finally caved in and used `loop` - well, it makes sense to use it where it makes sense.
+18. Data is code.  Sometimes.
