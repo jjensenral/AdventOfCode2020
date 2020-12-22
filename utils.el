@@ -127,3 +127,36 @@ Returns a cons of seconds, and the return value"
 	  (if m1
 	      (split-sequence test (subseq seq (1+ m1)))
 	    nil))))
+
+
+
+;;; ELisp doesn't have adjustable arrays, so this little macro is like
+;;; aset but may extend the vector in question (with nil in the gaps,
+;;; if any).  This implementation only extends the vector as much as
+;;; necessary, so is not designed for high performance.
+;;;
+;;; Set four in location 1, replacing the two; then set 1 in location
+;;; 4, which needs to extend the vector with locations 3 and 4:
+;;;
+;;; (let ((y (vector 1 2 3)))
+;;;   (aset-may-extend y 1 4)
+;;;   (aset-may-extend y 4 1))
+;;; => [1 4 3 nil 1]
+
+(defmacro aset-may-extend (vec idx new-elt)
+  (let ((new (gensym))
+	(i (gensym))
+	(len (gensym)))
+    `(let* ((,len (length ,vec))
+	    (,new (if (< ,idx ,len) nil
+	       (make-vector (1+ ,idx) nil))))
+       (cond
+	(,new
+	 ;; copy the old vector, no copy-into?
+	 (dotimes (,i ,len) (aset ,new ,i (aref ,vec ,i)))
+	 ;; and set the new element
+	 (aset ,new ,idx ,new-elt)
+	 (setf ,vec ,new)
+	 ,new)
+	;; fallback option, set in existing vector
+	(t (aset ,vec ,idx ,new-elt))))))
