@@ -25,9 +25,34 @@ Although the author has mostly tried to stay with core ELisp, in some
 cases, using a CL function has significantly shortened or improved
 readability of the code.  You may need to `(require 'cl)`.
 
-Older Emacsen may not be compatible.  For example, in Emacs 24, `#'=`
-accepts only two arguments, whereas later Emacsen (26, 27) (and the
-Common Lisp standard) accept multiple arguments.
+### Emacs Compatibility Notes
+
+Some differences between the ELisps have been found during development
+and testing.
+
+
+Older Emacsen in particular may have compatibility issues.  For
+example, in Emacs 24, `#'=` accepts only two arguments, whereas later
+Emacsen (26, 27) (and the Common Lisp standard) accept multiple
+arguments.
+
+Another sticking point seems to be the existence of the function
+`string-to-int`.  If it is not present in your Emacs, you can
+substitute `string-to-number` in the code, or alias them:
+
+```
+(fboundp 'string-to-int)
+nil
+(setf (symbol-function 'string-to-int) (symbol-function 'string-to-number))
+#<subr string-to-number>
+(string-to-int "123465")
+123465
+```
+
+Occasionally you might see strange behaviour in the code, such as
+strings being inexplicably interpreted as symbols.  If this happens,
+sadly, there is no other option than to restart Emacs.  Yes, sometimes
+it is necessary.
 
 ## Possible points of interest
 
@@ -44,7 +69,7 @@ code.  The numbers below reference the days in question.
 08. Going backwards through the program to fix it?
 09. Using an efficient queue implemented as LISt Processing
 10. More LISt Processing, using generic `split-sequence` (in utils) to reduce the problem
-11. Sadly, my ELisp code has a bug; it works on the test but not on the full input.  Until I fix the bug, I solved it in C++ instead (not included here)
+11. Sadly, my ELisp code has a bug; it works on the test but not on the full input.  Until I fix the bug, I solved the second half it in C++ instead (not included here)
 12. Why would you sometimes use `member` to check membership if it's guaranteed to be true?
 13. Lots of integery and listy calculations...
 14. Bit manipulations.  Backtick outside of macros.
@@ -52,3 +77,4 @@ code.  The numbers below reference the days in question.
 16. More uses of `mapcan` than you can shake a can at.
 17. Finally caved in and used `loop` - well, it makes sense to use it where it makes sense.
 18. Data is code.  Sometimes.
+19. Took a long time to get this right, possibly having taken the "significantly more difficult" route.  This code works, but exceeds Emacs built-in limits on the second part (tested by translating to Common Lisp)
